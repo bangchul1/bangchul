@@ -12,14 +12,14 @@ secret = "TIYYQ7rG75LzfbJqWrKAcdP3ftToqUNiqxVEKFoE"
 def get_ma_15h(ticker):
     df = pyupbit.get_ohlcv("KRW-BTC", interval="minute60", count=15)
     close = df['close']
-    ma_15h = close.rolling(15).mean().iloc[-1]
+    ma_15h = close.rolling(15).mean().iloc[-2]
     return ma_15h
 
 
 # 전시간 종가 조회
 def get_close(ticker):
     df = pyupbit.get_ohlcv("KRW-BTC", interval="minute60", count=1)
-    close = df.iloc[0]['close']
+    close = df.iloc[-2]['close']
     return close
 
 
