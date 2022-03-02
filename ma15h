@@ -23,22 +23,10 @@ def get_close(ticker):
     return close
 
 
-def get_balance(ticker):
-    """잔고 조회"""
-    balances = upbit.get_balances()
-    for b in balances:
-        if b['currency'] == ticker:
-            if b['balance'] is not None:
-                return float(b['balance'])
-            else:
-                return 0
-    return 0
 
 
 # 로그인
 upbit =  pyupbit.Upbit(access, secret)
-
-
 
 # 자동매매
 while True:     
@@ -46,12 +34,11 @@ while True:
       close = get_close("KRW-BTC")
         
       if ma_15h < close :
-         krw = upbit.get_balance("KRW")
+         krw = float(upbit.get_balances("KRW"))
          upbit.buy_market_order("KRW-BTC", krw*0.9995)
          
-        
       else:
-         btc = upbit.get_balance("BTC")
+         btc = float(upbit.get_balances("KRW-BTC"))
          upbit.sell_market_order("KRW-BTC", btc*0.9995)
          
          
