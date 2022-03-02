@@ -1,0 +1,57 @@
+import pyupbit
+import time
+
+
+access = "VtcpyVzbzT7kQsFaRaCzxQS399SK1GRo0gkBI2xN"
+secret = "TIYYQ7rG75LzfbJqWrKAcdP3ftToqUNiqxVEKFoE"
+
+
+
+# 15시간 이동평균 조회
+def get_ma_15h(TICKER):
+    df = pyupbit.get_ohlcv("KRW-BTC", interval="minute60", count=15)
+    close = df['close']
+    ma_15h = close.rolling(15).mean().iloc[-1]
+    return ma_15h
+
+
+# 전시간 종가 조회
+def get_close(TICKER):
+    df = pyupbit.get_ohlcv("KRW-BTC", interval="minute60", count=1)
+    close = df.iloc[0]['close']
+    return close
+
+
+# 잔고 조회
+def get_balance(ticker):
+    balances = upbit.get_balances()
+    for b in balances:
+        if b['currency'] == ticker:
+            if b['balance'] is not None:
+                return float(b['balance'])
+            else:
+                return 0
+    return 0
+
+
+# 로그인
+upbit =  pyupbit.Upbit(access, secret)
+
+
+# 자동매매
+while True:     
+      ma_15h = get_ma_15h("KRW-BTC")
+      close = get_close("KRW-BTC")
+        
+      if ma_15h < close :
+         krw = get_balance("KRW")
+        
+         upbit.buy_market_order("KRW-BTC", krw*0.9995)
+        
+      else:
+         btc = get_balance("BTC")
+         upbit.sell_market_order("KRW-BTC", btc*0.9995)
+         
+         
+      time.sleep(10)
+            
