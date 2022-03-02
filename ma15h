@@ -2,6 +2,7 @@ import pyupbit
 import time
 
 
+
 access = "VtcpyVzbzT7kQsFaRaCzxQS399SK1GRo0gkBI2xN"
 secret = "TIYYQ7rG75LzfbJqWrKAcdP3ftToqUNiqxVEKFoE"
 
@@ -22,9 +23,21 @@ def get_close(ticker):
     return close
 
 
+def get_balance(ticker):
+    """잔고 조회"""
+    balances = upbit.get_balances()
+    for b in balances:
+        if b['currency'] == ticker:
+            if b['balance'] is not None:
+                return float(b['balance'])
+            else:
+                return 0
+    return 0
+
 
 # 로그인
 upbit =  pyupbit.Upbit(access, secret)
+
 
 
 # 자동매매
@@ -34,12 +47,13 @@ while True:
         
       if ma_15h < close :
          krw = upbit.get_balance("KRW")
-        
          upbit.buy_market_order("KRW-BTC", krw*0.9995)
+         
         
       else:
          btc = upbit.get_balance("BTC")
          upbit.sell_market_order("KRW-BTC", btc*0.9995)
+         
          
          
       time.sleep(60)
