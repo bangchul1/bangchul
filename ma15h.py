@@ -10,9 +10,9 @@ secret = "TIYYQ7rG75LzfbJqWrKAcdP3ftToqUNiqxVEKFoE"
 
 # 15시간 이동평균 조회
 def get_ma_15h(ticker):
-    df = pyupbit.get_ohlcv("KRW-BTC", interval="minute60", count=15)
+    df = pyupbit.get_ohlcv("KRW-BTC", interval="minute60", count=60)
     close = df['close']
-    ma_15h = close.rolling(2).mean().iloc[-2]
+    ma_15h = close.rolling(50).mean().iloc[-2]
     return ma_15h
 
 
