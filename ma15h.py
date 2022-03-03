@@ -12,7 +12,7 @@ secret = "TIYYQ7rG75LzfbJqWrKAcdP3ftToqUNiqxVEKFoE"
 def get_ma_15h(ticker):
     df = pyupbit.get_ohlcv("KRW-BTC", interval="minute60", count=15)
     close = df['close']
-    ma_15h = close.rolling(15).mean().iloc[-2]
+    ma_15h = close.rolling(2).mean().iloc[-2]
     return ma_15h
 
 
